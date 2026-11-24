@@ -76,7 +76,7 @@ def initialize_db():
                     club TEXT,
                     position TEXT,
                     nationality TEXT,
-                    tier REAL,
+                    tier TEXT,
                     market_value_eur_m REAL,
                     age INTEGER,
                     sub_position TEXT,
