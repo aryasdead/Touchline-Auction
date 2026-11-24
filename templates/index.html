@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101812">
+  <title>Touchline Auction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body data-room-code="{{ room_code|default('', true) }}">
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark">T</span>
+      <span>TOUCHLINE<span class="brand-light"> AUCTION</span></span>
+    </a>
+    <span class="topbar-note">Build your dream squad</span>
+  </header>
+
+  <main>
+    {% if missing_room %}
+    <section class="notice-card">
+      <span class="eyebrow">ROOM NOT FOUND</span>
+      <h1>That invite link isn't valid.</h1>
+      <p>Ask the room creator for a fresh link, or start a new auction.</p>
+      <a class="button button-primary" href="/">Create a room</a>
+    </section>
+    {% elif room_code %}
+    <section id="room-app" class="room-shell">
+      <div class="room-heading">
+        <div>
+          <span class="eyebrow">PRIVATE AUCTION ROOM</span>
+          <h1 id="room-name">Loading room...</h1>
+        </div>
+        <button id="share-button" class="button button-secondary" type="button">Copy invite link</button>
+      </div>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      <section id="join-panel" class="card join-card" hidden>
+        <span class="eyebrow">YOU'RE INVITED</span>
+        <h2>Join the room</h2>
+        <p>Choose the name your friends will see in the auction.</p>
+        <form id="join-form" class="form-row">
+          <label class="sr-only" for="join-name">Your name</label>
+          <input id="join-name" name="username" maxlength="24" placeholder="Your name" required>
+          <button class="button button-primary" type="submit">Join auction</button>
+        </form>
+        <p id="join-error" class="error-message" role="alert"></p>
+      </section>
+      <div id="game-panel" hidden>
+        <div class="room-meta">
+          <span>ROOM CODE <strong id="room-code"></strong></span>
+          <span class="budget-chip">YOUR BUDGET <strong id="my-budget">€700m</strong></span>
+        </div>
+        <div class="game-grid">
+          <section class="card auction-card">
+            <div class="section-heading">
+              <div>
+                <span class="eyebrow">ON THE BLOCK</span>
+                <h2>Live auction</h2>
+              </div>
+              <span id="auction-status" class="live-pill">LIVE</span>
+            </div>
+            <div id="player-card" class="player-card"></div>
+            <div class="bid-area">
+              <div>
+                <span class="muted-label">CURRENT HIGH BID</span>
+                <strong id="current-bid" class="current-bid">No bids yet</strong>
+                <span id="bidder-name" class="bidder-name"></span>
+              </div>
+              <button id="bid-button" class="button button-primary bid-button" type="button">Place bid</button>
+            </div>
+            <p id="bid-hint" class="bid-hint"></p>
+            <button id="next-button" class="button button-secondary next-button" type="button" hidden>Close player &amp; continue</button>
+          </section>
+          <aside class="card sidebar-card">
+            <div class="section-heading">
+              <div>
+                <span class="eyebrow">THE ROOM</span>
+                <h2>Managers</h2>
+              </div>
+              <span id="manager-count" class="count-pill">0</span>
+            </div>
+            <ul id="member-list" class="member-list"></ul>
+          </aside>
+        </div>
+        <section class="card history-card">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">RECENT ACTIVITY</span>
+              <h2>Completed players</h2>
+            </div>
+          </div>
+          <div id="history-list" class="history-list"></div>
+        </section>
+      </div>
+    </section>
+    {% else %}
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">THE TRANSFER WINDOW IS OPEN</span>
+        <h1>Pick your players.<br><span>Own the pitch.</span></h1>
+        <p>Create a private football auction, invite your friends, and battle for the best squad. Every manager starts with €700m.</p>
+        <div class="feature-row">
+          <span><i></i> Real player database</span>
+          <span><i></i> Shareable private rooms</span>
+        </div>
+      </div>
+      <section class="card create-card">
+        <span class="eyebrow">GET THE ROOM STARTED</span>
+        <h2>Create your auction</h2>
+        <p>Set up a room and send the invite link to your league.</p>
+        <form id="create-form">
+          <label for="create-name">Your manager name</label>
+          <input id="create-name" name="username" maxlength="24" placeholder="e.g. Alex" required>
+          <label for="create-room-name">Room name <span class="optional">(optional)</span></label>
+          <input id="create-room-name" name="room_name" maxlength="50" placeholder="e.g. Sunday League">
+          <button class="button button-primary full-button" type="submit">Create room <span aria-hidden="true">→</span></button>
+          <p id="create-error" class="error-message" role="alert"></p>
+        </form>
+      </section>
+    </section>
+    {% endif %}
+  </main>
+  <footer>Built for the love of the game <span>•</span> Auction values in € millions</footer>
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>

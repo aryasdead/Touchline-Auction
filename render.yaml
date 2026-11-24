@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: touchline-auction
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements-render.txt
+    startCommand: gunicorn main:app --workers 1 --threads 8 --timeout 120 --bind 0.0.0.0:$PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: DATABASE_URL
+        sync: false
